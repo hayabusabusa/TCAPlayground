@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A513E6772B0A312D00E9BCE1 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = A513E6762B0A312D00E9BCE1 /* ComposableArchitecture */; };
+		A513E6792B0A314400E9BCE1 /* CounterFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A513E6782B0A314400E9BCE1 /* CounterFeature.swift */; };
 		A5A4F7262B09FAD200A111B7 /* YourFirstFeatureApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A4F7252B09FAD200A111B7 /* YourFirstFeatureApp.swift */; };
 		A5A4F7282B09FAD200A111B7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A4F7272B09FAD200A111B7 /* ContentView.swift */; };
 		A5A4F72A2B09FAD400A111B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5A4F7292B09FAD400A111B7 /* Assets.xcassets */; };
@@ -14,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A513E6782B0A314400E9BCE1 /* CounterFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterFeature.swift; sourceTree = "<group>"; };
 		A5A4F7222B09FAD200A111B7 /* YourFirstFeature.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YourFirstFeature.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5A4F7252B09FAD200A111B7 /* YourFirstFeatureApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFirstFeatureApp.swift; sourceTree = "<group>"; };
 		A5A4F7272B09FAD200A111B7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -26,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A513E6772B0A312D00E9BCE1 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +57,7 @@
 			children = (
 				A5A4F7252B09FAD200A111B7 /* YourFirstFeatureApp.swift */,
 				A5A4F7272B09FAD200A111B7 /* ContentView.swift */,
+				A513E6782B0A314400E9BCE1 /* CounterFeature.swift */,
 				A5A4F7292B09FAD400A111B7 /* Assets.xcassets */,
 				A5A4F72B2B09FAD400A111B7 /* Preview Content */,
 			);
@@ -83,6 +88,9 @@
 			dependencies = (
 			);
 			name = YourFirstFeature;
+			packageProductDependencies = (
+				A513E6762B0A312D00E9BCE1 /* ComposableArchitecture */,
+			);
 			productName = YourFirstFeature;
 			productReference = A5A4F7222B09FAD200A111B7 /* YourFirstFeature.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +119,9 @@
 				Base,
 			);
 			mainGroup = A5A4F7192B09FAD200A111B7;
+			packageReferences = (
+				A513E6752B0A312D00E9BCE1 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			productRefGroup = A5A4F7232B09FAD200A111B7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -137,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A513E6792B0A314400E9BCE1 /* CounterFeature.swift in Sources */,
 				A5A4F7282B09FAD200A111B7 /* ContentView.swift in Sources */,
 				A5A4F7262B09FAD200A111B7 /* YourFirstFeatureApp.swift in Sources */,
 			);
@@ -342,6 +354,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A513E6752B0A312D00E9BCE1 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A513E6762B0A312D00E9BCE1 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A513E6752B0A312D00E9BCE1 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A5A4F71A2B09FAD200A111B7 /* Project object */;
 }
