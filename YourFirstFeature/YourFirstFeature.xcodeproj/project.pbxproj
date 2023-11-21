@@ -17,6 +17,7 @@
 
 /* Begin PBXFileReference section */
 		A513E6782B0A314400E9BCE1 /* CounterFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterFeature.swift; sourceTree = "<group>"; };
+		A56395D62B0BBB67006422FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A5A4F7222B09FAD200A111B7 /* YourFirstFeature.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YourFirstFeature.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5A4F7252B09FAD200A111B7 /* YourFirstFeatureApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFirstFeatureApp.swift; sourceTree = "<group>"; };
 		A5A4F7272B09FAD200A111B7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -55,6 +56,7 @@
 		A5A4F7242B09FAD200A111B7 /* YourFirstFeature */ = {
 			isa = PBXGroup;
 			children = (
+				A56395D62B0BBB67006422FC /* Info.plist */,
 				A5A4F7252B09FAD200A111B7 /* YourFirstFeatureApp.swift */,
 				A5A4F7272B09FAD200A111B7 /* ContentView.swift */,
 				A513E6782B0A314400E9BCE1 /* CounterFeature.swift */,
@@ -286,6 +288,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"YourFirstFeature/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YourFirstFeature/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -314,6 +317,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"YourFirstFeature/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YourFirstFeature/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

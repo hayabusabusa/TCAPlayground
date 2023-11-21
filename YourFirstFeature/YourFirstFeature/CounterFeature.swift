@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import Foundation
 
 @Reducer
 struct CounterFeature {
@@ -14,12 +15,24 @@ struct CounterFeature {
     /// `ViewStore` で利用するために `State` を `Equatable` に準拠させる必要がある.
     struct State: Equatable {
         var count = 0
+        var fact: String?
+        var isLoading = false
+        var isTimerRunning = false
     }
 
     /// ユーザーがその機能で実行できるすべてのアクションを表す
     enum Action {
         case decrementButtonTapped
+        case factButtonTapped
+        case factResponse(String)
         case incrementButtonTapped
+        case timerTick
+        case toggleTimerButtonTapped
+    }
+
+    /// `Effect` をキャンセルする際に利用する ID.
+    enum CancelID {
+        case timer
     }
 
     /// `body` プロパティの実装が必要.
@@ -30,11 +43,63 @@ struct CounterFeature {
             switch action {
             case .decrementButtonTapped:
                 state.count -= 1
+                state.fact = nil
                 // 実行する副作用？ `Effect` がないため `.none` を返す.
+                return .none
+            case .factButtonTapped:
+                state.fact = nil
+                state.isLoading = true
+
+                // `state.fact` は API の値を利用するため副作用が発生する.
+                // ここで URLSession などで通信の処理を行いたいが、非同期処理なのでここに書くことが出来ない.
+                // TCA では State の単純な変換を複雑で厄介な副作用から切り離している. これは核となる考え方であり、多くのメリットがある.
+                // この副作用を実行するためのものを `Effect` と呼んでいる.
+                // ❌ let (date, _) = await URLSession.shared.data(from: URL(string: "http://numbersapi.com/\(state.count)")!)
+
+                // `Effect` を実行するメインの手段が `run(priority:operation:catch:fileID:line:)`.
+                return .run { [count = state.count] send in
+                    // ここでなら非同期処理を実行することができる.
+                    // ⚠️ 今はエラーのことを考慮していないが、本来は `TaskResult` を利用してエラーを `Reducer` に伝えて適切に処理する.
+                    let (data, _) = try await URLSession.shared.data(from: URL(string: "http://numbersapi.com/\(count)")!)
+                    let fact = String(decoding: data, as: UTF8.self)
+
+                    // ただし、取得したデータを使ってそのまま `State` を更新することはできない.
+                    // `Reducer` が実行する純粋な `State` の変更を複雑は `Effect` の処理から分離するため、クロージャー内で `State` をキャプチャ出来ないようにしている.
+                    // ❌ state.fact = fact
+
+                    // `Effect` の情報を `Reducer` に戻すため、別の `Action` を利用して `Reducer` に戻して `State` を更新する.
+                    await send(.factResponse(fact))
+                }
+            case let .factResponse(fact):
+                state.fact = fact
+                state.isLoading = false
                 return .none
             case .incrementButtonTapped:
                 state.count += 1
+                state.fact = nil
                 return .none
+            case .timerTick:
+                state.count += 1
+                state.fact = nil
+                return .none
+            case .toggleTimerButtonTapped:
+                state.isTimerRunning.toggle()
+                if state.isTimerRunning {
+                    // タイマーの停止を再現するため `Effect` を途中でキャンセルさせる.
+                    // キャンセルのために `cancellable(id:)` メソッドを利用する.
+                    return .run { send in
+                        // ⚠️ あんまり良くないけど無限ループを利用してタイマーを実現させる.
+                        while true {
+                            try await Task.sleep(for: .seconds(1))
+                            // `Effect` の結果を `Reducer` に戻す `Action` を実行して `State` を更新する.
+                            await send(.timerTick)
+                        }
+                    }
+                    .cancellable(id: CancelID.timer)
+                } else {
+                    // タイマー実行中の場合はキャンセルさせる.
+                    return .cancel(id: CancelID.timer)
+                }
             }
         }
     }
