@@ -35,6 +35,11 @@ struct CounterFeature {
         case timer
     }
 
+    /// `Task.sleep` などのタイマーに関する処理をテスト側では差し替えられるようにする.
+    @Dependency(\.continuousClock) var clock
+    /// 通信処理をテスト時に差し替えられるようにする.
+    @Dependency(\.numberFact) var numberFact
+
     /// `body` プロパティの実装が必要.
     /// `Action` を受け取って、現在の `State` を次の状態に変化させる.
     var body: some ReducerOf<Self> {
@@ -60,15 +65,15 @@ struct CounterFeature {
                 return .run { [count = state.count] send in
                     // ここでなら非同期処理を実行することができる.
                     // ⚠️ 今はエラーのことを考慮していないが、本来は `TaskResult` を利用してエラーを `Reducer` に伝えて適切に処理する.
-                    let (data, _) = try await URLSession.shared.data(from: URL(string: "http://numbersapi.com/\(count)")!)
-                    let fact = String(decoding: data, as: UTF8.self)
+//                    let (data, _) = try await URLSession.shared.data(from: URL(string: "http://numbersapi.com/\(count)")!)
+//                    let fact = String(decoding: data, as: UTF8.self)
 
                     // ただし、取得したデータを使ってそのまま `State` を更新することはできない.
                     // `Reducer` が実行する純粋な `State` の変更を複雑は `Effect` の処理から分離するため、クロージャー内で `State` をキャプチャ出来ないようにしている.
                     // ❌ state.fact = fact
 
                     // `Effect` の情報を `Reducer` に戻すため、別の `Action` を利用して `Reducer` に戻して `State` を更新する.
-                    await send(.factResponse(fact))
+                    try await send(.factResponse(self.numberFact.fetch(count)))
                 }
             case let .factResponse(fact):
                 state.fact = fact
@@ -88,9 +93,7 @@ struct CounterFeature {
                     // タイマーの停止を再現するため `Effect` を途中でキャンセルさせる.
                     // キャンセルのために `cancellable(id:)` メソッドを利用する.
                     return .run { send in
-                        // ⚠️ あんまり良くないけど無限ループを利用してタイマーを実現させる.
-                        while true {
-                            try await Task.sleep(for: .seconds(1))
+                        for await _ in self.clock.timer(interval: .seconds(1)) {
                             // `Effect` の結果を `Reducer` に戻す `Action` を実行して `State` を更新する.
                             await send(.timerTick)
                         }
