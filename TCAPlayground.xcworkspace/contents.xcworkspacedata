@@ -4,4 +4,7 @@
    <FileRef
       location = "group:YourFirstFeature/YourFirstFeature.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Navigation/Navigation.xcodeproj">
+   </FileRef>
 </Workspace>
